@@ -3,20 +3,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { decrement, increment, selectCount } from '../store/counterSlice';
+import { selectTheme, toggleTheme } from '../store/themeSlice';
 import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const dispatch = useDispatch();
   const count = useSelector(selectCount);
+  const mode = useSelector(selectTheme);
+  const bgColor = mode === 'light' ? 'white' : 'black';
+  const textColor = mode === 'light' ? 'black' : 'white';
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: bgColor }]}>
       <Text style={styles.title}>{count}</Text>
+
       <Pressable onPress={() => dispatch(increment())}>
-        <Text>INCREMENT</Text>
+        <Text style={{ color: textColor }}>INCREMENT</Text>
       </Pressable>
+
       <Pressable onPress={() => dispatch(decrement())}>
-        <Text>DECREMENT</Text>
+        <Text style={{ color: textColor }}>DECREMENT</Text>
+      </Pressable>
+
+      <Pressable onPress={() => dispatch(toggleTheme('dark'))}>
+        <Text style={{ color: textColor }}>MAKE THEME DARK</Text>
+      </Pressable>
+
+      <Pressable onPress={() => dispatch(toggleTheme('light'))}>
+        <Text style={{ color: textColor }}>MAKE THEME LIGHT</Text>
       </Pressable>
     </View>
   );
